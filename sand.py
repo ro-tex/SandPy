@@ -1,3 +1,4 @@
+import os
 import random
 import time
 from time import gmtime  # import just one method, use it without module prefix
@@ -180,3 +181,26 @@ def func_gen():
 
 f = func_gen()
 print f()
+
+### I/O ###
+
+# s = raw_input('Enter something:') # we get raw string into s
+# evaluates the input as Python code and stores the result into s:
+# s = input('Enter someting (it can be Python code):')
+
+my_file = open('file.dat', 'w+')  # check access_modes - there's binary rw
+my_file.write('loren ipsum\n')
+my_file.close()  # we need to do that. also flushes the buffers
+
+my_file = open('file.dat', 'r')
+# we set a limit on the read, otherwise it will read the entire file into memory (or at least attempt to):
+content = my_file.read(200)  # reads only what is there, doesn't pad to 200
+my_file.tell()  # at which position in the file are we?
+# go to position 0, so we can read/write from there. the second param is a reference point -
+# should we move to 0 from the start of the file (0), the current position (1) or the end of the file (2):
+my_file.seek(0, 0)
+my_file.close()
+print '>>>', content, '<<<'
+
+os.rename('file.dat', 'del_me.dat')
+os.remove('del_me.dat')  # delete the file
