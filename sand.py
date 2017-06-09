@@ -1,10 +1,13 @@
 import random
 import time
+from time import gmtime  # import just one method, use it without module prefix
+
+from rolib import *  # don't go wild with this one - pollutes the namespace
 
 
 def hi():
-    """Prints out "Hello Python!"
-    """
+    '''Prints out "Hello Python!"
+    '''
     print "Hello Python!"
 
 ### STRINGS ###
@@ -23,7 +26,7 @@ print "Hello World!"[:6] + "Python!"  # this is interesting
 sep = "-"
 strings = ["a", "b", "c"]
 # joining is a bit... reversed - you cast it on the separator:
-print sep.join(strings)
+print sep.join(strings)  # and you can't pass a list of ints instead of strings
 print ">>>", "  stripping whitespaces   ".strip(), "<<<"
 
 arr = ['zero', 1, True, 3.14, "four"]  # a list
@@ -115,3 +118,65 @@ random.seed(time.clock())  # seed with current CPU time (a float)
 random.shuffle(arr)  # shuffles the structure, returning none
 print random.choice(arr)  # random element of arr
 print random.random(), random.uniform(5, 10)  # rand 0..1, rand 5..10
+
+t = time.time()
+print 'UNIX time:', t, '\tReadable time:', time.ctime(), '\tLocal readable time:', time.asctime(time.localtime(t))
+
+### FUNCTIONS ###
+
+
+def foo(a=0, b=1, c=2):
+    '''Prints the input vars. Has default values (we can skip args).
+    '''
+    print 'foo:', "A: %d, B: %d, C: %d" % (a, b, c)
+
+
+foo()  # prints out the defult values
+# args in random order but named:
+foo(c=3, a=1, b=2)  # these are not defined as veriables a, b and c outside!
+
+
+def bar(*args):
+    '''Works on any number of arguments, all caught in the args variable.
+        The function can have other args as well but while we can pass those as
+        named paramters, we cannot pass the *args in a named form - the *args tuple
+        will catch anything that's beyond the required params.
+    '''
+    # for x in args: print x
+    print 'bar:', " - ".join(args)
+
+
+b = bar  # functions are first class citizens! can pass them as values! :)
+b('a', 'b', 'c')
+
+### LAMBDAS ###
+
+'''Lambdas in Python aren't really "anonymous functions" but rather just named expressions.
+They are similar to Ruby's lambdas and very different from Go's anon funcs.
+They don't have access to variables which haven't been passed as arguments (local namespace).
+'''
+
+# defining two, so the linter won't convert them to regular functions:
+l1, l2 = lambda x, y: x**y, lambda x, y: x + y
+print 'Lambdas:', l1(3, 5), l2(3, 5)
+
+print hello()  # calling a method from a module
+
+# yes, you can do this - raw strings just hanging around like that:
+"let's play with variable scoping for a bit:"
+glob = 1  # a global var
+
+
+def func_gen():
+    glob = 2  # this will never be used - it's local but not to inner()
+
+    def inner():
+        'This function is a closure.'
+        # glob = 3  # if we do those, glob will always be a local var, even if we call `global glob`
+        global glob  # skips the glob = 2 and uses glob = 1. otherwise uses glob = 2
+        return glob
+    return inner
+
+
+f = func_gen()
+print f()
