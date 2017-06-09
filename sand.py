@@ -204,3 +204,20 @@ print '>>>', content, '<<<'
 
 os.rename('file.dat', 'del_me.dat')
 os.remove('del_me.dat')  # delete the file
+
+### EXCEPTIONS ###
+
+try:
+    fh = open("testfile", "r")
+    fh.write("This is my test file for exception handling!!")
+    raise AssertionError, 'Error message'
+
+except (IOError, AssertionError), ex:  # we can catch multiple like this
+    print "Error: can\'t find file or read data.", ex
+except ex:  # considered bad style
+    print "Error: something else happened!", ex
+else:  # no exception was raised
+    print "Written content in the file successfully"
+    fh.close()
+finally:
+    print 'finally'
