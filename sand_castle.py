@@ -3,7 +3,9 @@ from structure import Structure
 
 class SandCastle (Structure):  # inheritance
     'Defines a sand castle.'
-    __num_castles = 0  # private
+
+    __num_castles = 0  # private class field
+    purpose = 'fun'  # public class field
 
     # Constructor:
     def __init__(self, name, size):

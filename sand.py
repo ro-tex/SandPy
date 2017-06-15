@@ -7,8 +7,7 @@ from rolib import *  # don't go wild with this one - pollutes the namespace
 
 
 def hi():
-    '''Prints out "Hello Python!"
-    '''
+    '''Prints out "Hello Python!"'''
     print "Hello Python!"
 
 ### STRINGS ###
