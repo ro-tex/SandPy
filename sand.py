@@ -220,3 +220,13 @@ else:  # no exception was raised
     fh.close()
 finally:
     print 'finally'
+
+
+def args(arg, *args, **kwargs):
+    # The *args and **kwargs names are the established naming convention
+    print arg  # a single arg
+    print args  # an array of args
+    print kwargs  # a dict of named args
+
+
+args('a', 'b', 'c', foo=3, bar=4)
