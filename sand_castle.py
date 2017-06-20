@@ -26,9 +26,14 @@ class SandCastle (Structure):  # inheritance
         # How to serialize this object to printable string
         return
 
-    def __cmp__(self):
+    def __cmp__(self, other):
         # Custom comparator
-        return
+        if self.size < other.size:
+            return -1
+        elif self.size > other.size:
+            return 1
+        else:
+            return 0
 
     def __add__(self, other):
         # Overloading the '+' operator for sand castles
@@ -53,7 +58,6 @@ getattr(c, 'age', 1)
 setattr(c, 'age', 2)
 hasattr(c, 'age')
 delattr(c, 'age')
-
 
 print 'Is subclass?', issubclass(SandCastle, Structure)
 print 'Is instance?', isinstance(c, SandCastle)
