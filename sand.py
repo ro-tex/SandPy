@@ -230,3 +230,17 @@ def args(arg, *args, **kwargs):
 
 
 args('a', 'b', 'c', foo=3, bar=4)
+
+# get [1..100], filter the numbers below 5, square each of them and sum the resulting list:
+print 'Get the squares of [1, 2, 3, 4] and sum them with filter-map-reduce:', \
+    reduce((lambda x, y: x + y), map((lambda x: x**2),
+                                     filter((lambda x: x < 5), range(100))))
+
+funcs = [
+    lambda x: x * 2,  # we can use function names here, too
+    lambda x: x * 3,
+    lambda x: x * x
+]
+
+# a map operating on multiple input iterables:
+print 'Run a set of funcs on [1, 2, 3]:', map((lambda x, y: x(y)), funcs, [1, 2, 3])
