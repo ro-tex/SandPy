@@ -2,10 +2,10 @@ from structure import Structure
 
 
 class SandCastle (Structure):  # inheritance
-    'Defines a sand castle.'
+    '''Defines a sand castle.'''
 
-    __num_castles = 0  # private class field
-    purpose = 'fun'  # public class field
+    __num_castles = 0   # private class field
+    purpose = 'fun'     # public class field
 
     # Constructor:
     def __init__(self, name, size):
@@ -16,18 +16,19 @@ class SandCastle (Structure):  # inheritance
     # Destructor:
     def __del__(self):
         class_name = self.__class__.__name__
+        SandCastle.__num_castles -= 1
         print class_name, self.name, "destroyed"
 
+    # Serialize this object to evaluatable code:
     def __repr__(self):
-        # How to serialize this object to evaluatable code
         return
 
+    # Serialize this object to printable string:
     def __str__(self):
-        # How to serialize this object to printable string
-        return
+        return "Castle. Name: %s, size: %s." % (self.name, str(self.size))
 
+    # Custom comparator:
     def __cmp__(self, other):
-        # Custom comparator
         if self.size < other.size:
             return -1
         elif self.size > other.size:
@@ -35,8 +36,10 @@ class SandCastle (Structure):  # inheritance
         else:
             return 0
 
+    # Overload the '+' operator for sand castles:
     def __add__(self, other):
-        # Overloading the '+' operator for sand castles
+        # also __sub__, __mul__, __div__, etc.
+        # for a list see https://docs.python.org/2/library/operator.html
         return
 
     # Override the parent method:
@@ -54,10 +57,11 @@ print c.get_greeting()
 print SandCastle.static()
 
 del c.size  # WE CAN DELETE ATTRIBUTES! WTF!??!?!
-getattr(c, 'age', 1)
+
+print 'age:', getattr(c, 'age', 0)  # default to 0 if 'age' does not exist
 setattr(c, 'age', 2)
-hasattr(c, 'age')
-delattr(c, 'age')
+print 'has attribute?', hasattr(c, 'age')
+delattr(c, 'age')  # another way to delete an attribute
 
 print 'Is subclass?', issubclass(SandCastle, Structure)
 print 'Is instance?', isinstance(c, SandCastle)

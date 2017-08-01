@@ -23,11 +23,13 @@ print "Hello World!"[:6] + "Python!"  # this is interesting
 
 ### LISTS ###
 
-sep = "-"
 strings = ["a", "b", "c"]
 # joining is a bit... reversed - you cast it on the separator:
-print sep.join(strings)  # and you can't pass a list of ints instead of strings
+# and you can't pass a list of ints instead of strings
+print ' - '.join(strings)
 print ">>>", "  stripping whitespaces   ".strip(), "<<<"
+
+# string methods do NOT change the original string (strip, capitalize, etc...)
 
 arr = ['zero', 1, True, 3.14, "four"]  # a list
 arr.append(5)
@@ -46,8 +48,8 @@ list = ['php', 'java', 'ruby'][1:] + ['go', 'rust', 'python']
 del list[3]
 # list.append('c') # adds one element
 # list.extend(tup) # adds a whole list of elements
-# list.pop(); list.remove('c'); etc... no shift/unshift, though - use list.insert()
-print list
+# list.pop(); (no push) list.remove('c'); etc... no shift/unshift, though - use list.insert()
+print list  # ['java', 'ruby', 'go', 'python']
 
 ### TUPLES ###
 
@@ -105,7 +107,7 @@ while n == 5:
     print "In a while loop..."
     n -= 1  # yeah, no n++/n-- :(
 else:
-    # this will be skipped if we break out of the loop
+    # this will be skipped if we break out of the loop (or throw an exception)
     print "...and we exited the while without a break!"
 
 # Ye olde foreach:
@@ -120,7 +122,7 @@ for i in range(2, len(arr)):  # we can play around with this range a lot. Almost
     break
 
 random.seed(time.clock())  # seed with current CPU time (a float)
-random.shuffle(arr)  # shuffles the structure, returning none
+random.shuffle(arr)  # shuffles the structure, returning None
 print random.choice(arr)  # random element of arr
 print random.random(), random.uniform(5, 10)  # rand 0..1, rand 5..10
 
@@ -131,8 +133,7 @@ print 'UNIX time:', t, '\tReadable time:', time.ctime(), '\tLocal readable time:
 
 
 def foo(a=0, b=1, c=2):
-    '''Prints the input vars. Has default values (we can skip args).
-    '''
+    '''Prints the input vars. Has default values (we can skip args).'''
     print 'foo:', "A: %d, B: %d, C: %d" % (a, b, c)
 
 
@@ -142,7 +143,7 @@ foo(c=3, a=1, b=2)  # these are not defined as veriables a, b and c outside!
 
 
 def bar(*args):
-    '''Works on any number of arguments, all caught in the args variable.
+    ''' Works on any number of arguments, all caught in the args variable.
         The function can have other args as well but while we can pass those as
         named paramters, we cannot pass the *args in a named form - the *args tuple
         will catch anything that's beyond the required params.
@@ -151,14 +152,14 @@ def bar(*args):
     print 'bar:', " - ".join(args)
 
 
-b = bar  # functions are first class citizens! can pass them as values! :)
+b = bar  # functions are first class citizens! we can pass them as values! :)
 b('a', 'b', 'c')
 
 ### LAMBDAS ###
 
-'''Lambdas in Python aren't really "anonymous functions" but rather just named expressions.
-They are similar to Ruby's lambdas and very different from Go's anon funcs.
-They don't have access to variables which haven't been passed as arguments (local namespace).
+''' Lambdas in Python aren't really "anonymous functions" but rather just named expressions.
+    They are similar to Ruby's lambdas and very different from Go's anon funcs.
+    They don't have access to variables which haven't been passed as arguments (local namespace).
 '''
 
 # defining two, so the linter won't convert them to regular functions:
@@ -217,21 +218,26 @@ try:
     raise AssertionError, 'Error message'
 
 except (IOError, AssertionError), ex:  # we can catch multiple like this
+
+    # import pdb; pdb.set_trace()  # this is how we set a breakpoint!
     print "Error: can\'t find file or read data.", ex
+
 except ex:  # considered bad style
     print "Error: something else happened!", ex
+
 else:  # no exception was raised
     print "Written content in the file successfully"
     fh.close()
+
 finally:
     print 'finally'
 
 
 def args(arg, *args, **kwargs):
     # The *args and **kwargs names are the established naming convention
-    print arg  # a single arg
-    print args  # an array of args
-    print kwargs  # a dict of named args
+    print arg       # a single arg
+    print args      # an array of args
+    print kwargs    # a dict of named args
 
 
 args('a', 'b', 'c', foo=3, bar=4)
