@@ -36,6 +36,11 @@ print arr[1:]  # list slicing - just like go
 
 print [1, 2, 3] + [4, 5, 6]  # -> [1, 2, 3, 4, 5, 6] arr concat? :)
 
+# results in a new list where every element of arr is *2-ed:
+arr2 = [elem * 2 for elem in arr]
+# the same concept with nested fors:
+pairs = [(x, y) for x in arr for y in arr2]
+
 # slice and dice lists
 list = ['php', 'java', 'ruby'][1:] + ['go', 'rust', 'python']
 del list[3]
