@@ -25,8 +25,10 @@ print "Hello World!"[:6] + "Python!"  # this is interesting
 
 strings = ["a", "b", "c"]
 # joining is a bit... reversed - you cast it on the separator:
-# and you can't pass a list of ints instead of strings
 print ' - '.join(strings)
+# and you can't pass a list of ints instead of strings
+# but you can map them to strings:
+print ' - '.join(map(lambda x: str(x), range(1, 4)))
 print ">>>", "  stripping whitespaces   ".strip(), "<<<"
 
 # string methods do NOT change the original string (strip, capitalize, etc...)
@@ -40,7 +42,7 @@ print [1, 2, 3] + [4, 5, 6]  # -> [1, 2, 3, 4, 5, 6] arr concat? :)
 
 # results in a new list where every element of arr is *2-ed:
 arr2 = [elem * 2 for elem in arr]
-# the same concept with nested fors:
+# the same concept with nested fors (all to all, results in len(arr) * len(arr2) elements):
 pairs = [(x, y) for x in arr for y in arr2]
 
 # slice and dice lists
@@ -57,12 +59,16 @@ print list  # ['java', 'ruby', 'go', 'python']
 tup = ('zero', 1, True, 3.14, "four")  # yup, this is a tuple. with 5 values
 print tup[1:-1]  # we can slice them just like lists
 tup2 = 'foo', 'bar', 2  # the parntheses are optional
-empty, single = (), (50,)   # except when empty or single - notice the trailing comma!
+empty, single = (), (50,)   # except when empty or single (notice the trailing comma!)
 # del tup2[2] -> throws an error, tuples are immutable
 del tup2  # this is fine - we're removing the whole thing
 
 s, fs = set(tup * 2), frozenset(tup * 2)
 print s, fs
+s.add('add')
+s.remove('four')
+print s.difference(fs)  # also: .issubset(), .issuperset(), .intersection()
+s.clear()
 
 ### DICTS ###
 
@@ -81,7 +87,7 @@ dic.update({'foo': 'bar', 'lala': 'blabla'})
 # Char ops: chr(61), ord('a'), unichr(61)
 
 # Binary operations:
-#   a, b = 0b00111100, 0b00001101
+#  a , b = 0b00111100, 0b00001101
 #  a & b = 0b00001100 AND
 #  a | b = 0b00111101 OR
 #  a ^ b = 0b00110001 XOR
@@ -104,11 +110,11 @@ else:
     print "zero"
 
 while n == 5:
-    print "In a while loop..."
+    print "In a `while` loop..."
     n -= 1  # yeah, no n++/n-- :(
 else:
     # this will be skipped if we break out of the loop (or throw an exception)
-    print "...and we exited the while without a break!"
+    print "...and we exited the `while` without a break!"
 
 # Ye olde foreach:
 for el in arr:
@@ -175,17 +181,24 @@ glob = 1  # a global var
 
 def func_gen():
     glob = 2  # this will never be used - it's local but not to inner()
+    # always 2, does not affect the global glob - the local covers the global
+    print glob, 'should be 2 - func_gen'
 
     def inner():
         'This function is a closure.'
-        # glob = 3  # if we do those, glob will always be a local var, even if we call `global glob`
-        global glob  # skips the glob = 2 and uses glob = 1. otherwise uses glob = 2
+        # glob = 3  # if we do those, `glob` will always be a local var, even if we call `global glob` later
+        # `inner()` is closure on the `glob` within `func_gen`
+        print glob, 'should be 2 - inner or 1 if we call `global glob`'
+        # next line skips the glob = 2 and uses glob = 1. otherwise uses glob = 2. affects the whole scope, even the parts that preceed the call!
+        global glob
+        # `inner()` is closure on the `glob` within `func_gen`
+        print glob, 'should be 1 - inner uses global'
         return glob
     return inner
 
 
 f = func_gen()
-print f()
+# print f()
 
 ### I/O ###
 
@@ -222,7 +235,7 @@ except (IOError, AssertionError), ex:  # we can catch multiple like this
     # import pdb; pdb.set_trace()  # this is how we set a breakpoint!
     print "Error: can\'t find file or read data.", ex
 
-except ex:  # considered bad style
+except ex:  # catch-all, considered bad style
     print "Error: something else happened!", ex
 
 else:  # no exception was raised
@@ -244,8 +257,10 @@ args('a', 'b', 'c', foo=3, bar=4)
 
 # get [1..100], filter the numbers below 5, square each of them and sum the resulting list:
 print 'Get the squares of [1, 2, 3, 4] and sum them with filter-map-reduce:', \
-    reduce((lambda x, y: x + y), map((lambda x: x**2),
-                                     filter((lambda x: x < 5), range(100))))
+    reduce((lambda x, y: x + y),
+           map((lambda x: x**2),
+               filter((lambda x: x < 5), range(100))))
+# this could have been (1..100).filter{|n| n < 5}.map{|n| x**2}.reduce{|sum, n| sum += n} in Ruby
 
 funcs = [
     lambda x: x * 2,  # we can use function names here, too
